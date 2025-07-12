@@ -45,7 +45,7 @@ public class Server_12 {
     public static void writeToFile(String fileName, String chipSequence, String data) throws IOException {
         FileWriter fw = new FileWriter(fileName);
         String binary = despread(chipSequence, data);
-        for (int i = 0; i <= binary.length() - 8; i += 😎 {
+        for (int i = 0; i <= binary.length() - 8; i += 8) {
             String byteStr = binary.substring(i, i + 8);
             int charCode = Integer.parseInt(byteStr, 2);
             fw.write((char) charCode);
