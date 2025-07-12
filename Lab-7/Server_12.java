@@ -16,16 +16,15 @@ public class Server_12 {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            StringBuilder receivedBits = new StringBuilder();
-            String line;
 
-            while ((line = in.readLine()) != null) {
-                receivedBits.append(line);
-            }
+            String receivedBits = in.readLine();
+            
+            
+            int n1 = Integer.parseInt(in.readLine());
 
-            int mid = receivedBits.length() / 2;
-            String part1 = receivedBits.substring(0, mid);
-            String part2 = receivedBits.substring(mid);
+            
+            String part1 = receivedBits.substring(0, n1);
+            String part2 = receivedBits.substring(n1);
 
             writeToFile(recoveredFiles[0], chipSequence, part1);
 

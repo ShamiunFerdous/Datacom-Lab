@@ -5,26 +5,44 @@ import java.net.*;
 public class Client_42{
     public static void main(String[] args) {
         String[] files = {"input1.txt", "input2.txt"};
-        String spreadingCode = "101";
+        String code = "101";
 
         try {
-            Socket socket = new Socket("10.33.27.156", 5100);
+            Socket socket = new Socket("localhost", 5100);
             System.out.println("Client connected to server.");
 
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            
+            StringBuilder allSpreadData = new StringBuilder();
+            int firstFileLength = 0;
 
-            for (String file : files) {
-                FileInputStream fis = new FileInputStream(file);
-                int ch;
-
-                while ((ch = fis.read()) != -1) {
-                    char character = (char) ch;
-                    String binaryString = binary(Character.toString(character));
-                    String spreadData = spread(spreadingCode, binaryString);
-                    out.writeBytes(spreadData + "\n");
-                }
-                fis.close();
+            // Process first file
+            FileInputStream fis1 = new FileInputStream(files[0]);
+            StringBuilder firstFileData = new StringBuilder();
+            int ch;
+            while ((ch = fis1.read()) != -1) {
+                char character = (char) ch;
+                String binaryString = binary(Character.toString(character));
+                String spreadData = spread(code, binaryString);
+                firstFileData.append(spreadData);
             }
+            fis1.close();
+            firstFileLength = firstFileData.length();
+            allSpreadData.append(firstFileData);
+
+            // Process second file
+            FileInputStream fis2 = new FileInputStream(files[1]);
+            while ((ch = fis2.read()) != -1) {
+                char character = (char) ch;
+                String binaryString = binary(Character.toString(character));
+                String spreadData = spread(code, binaryString);
+                allSpreadData.append(spreadData);
+            }
+            fis2.close();
+
+            out.println(allSpreadData.toString());
+            out.println(firstFileLength);
+            
             out.close();
             socket.close();
             System.out.println("Data sent and connection closed.");
@@ -35,13 +53,13 @@ public class Client_42{
     }
 
     public static String spread(String a, String s) {
-        StringBuilder result = new StringBuilder();
+        String result = "";
 
         for (int i = 0; i < s.length(); i++) {
-            result.append(xor(s.charAt(i), a));
+            result += xor(s.charAt(i), a);
         }
 
-        return result.toString();
+        return result;
     }
 
     public static String xor(char bit, String codeword) {
