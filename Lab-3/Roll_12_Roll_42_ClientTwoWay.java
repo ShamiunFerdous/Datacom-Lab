@@ -1,5 +1,3 @@
-package Graph.Lab;
-
 import java.io.*;
 import java.net.*;
 
@@ -43,7 +41,8 @@ public class Roll_12_Roll_42_ClientTwoWay {
         String binaryData = textToBinary(originalText.toString());
         String stuffed = bitStuff(binaryData);
 
-        Socket s = new Socket("10.33.24.95", 5010); // change IP if needed
+        //Socket s = new Socket("10.33.24.95", 5010); // change IP if needed
+        Socket s = new Socket("localhost", 5010); // change IP if needed
         System.out.println("Connected to server.");
 
         DataOutputStream output = new DataOutputStream(s.getOutputStream());
